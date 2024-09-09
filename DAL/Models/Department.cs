@@ -11,11 +11,12 @@ namespace DAL.Models
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Code is required")]
         public String Code { get; set; }
-
+        [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
 
+        [Display(Name = "Date of Creation")]
         public DateTime CreatedDate { get; set; }
     }
 }
