@@ -10,40 +10,15 @@ using System.Threading.Tasks;
 
 namespace BLL.Respositories
 {
-    public class EmployeeRepository : IEmployeeRepository
+    public class EmployeeRepository : GenericRepository<Employee>, IEmployeeRepository
     {
-        private readonly AppDbContext appDbContext;
-        public EmployeeRepository(AppDbContext appDbContext)
+        public EmployeeRepository(AppDbContext appDbContext) : base(appDbContext)
         {
-            this.appDbContext = appDbContext;
         }
 
-        public int Add(Employee Employee)
+        public IQueryable<Employee> GetEmployeeByAddress(string Address)
         {
-            appDbContext.Employees.Add(Employee);
-            return appDbContext.SaveChanges();
-        }
-
-        public int Delete(Employee Employee)
-        {
-            appDbContext.Employees.Remove(Employee);
-            return appDbContext.SaveChanges();
-        }
-
-        public IEnumerable<Employee> GetAll()
-        {
-            return appDbContext.Employees.AsNoTracking().ToList();
-        }
-
-        public Employee GetById(int id)
-        {
-            return appDbContext.Employees.Find(id);
-        }
-
-        public int Update(Employee Employee)
-        {
-            appDbContext.Employees.Update(Employee);
-            return appDbContext.SaveChanges();
+            return appDbContext.Employees.Where(e => e.Address.ToLower().Contains(Address.ToLower()));
         }
     }
 }

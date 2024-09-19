@@ -6,20 +6,20 @@ using Microsoft.Extensions.Hosting;
 
 namespace PL.Controllers
 {
-    public class DepartmentController : Controller
+    public class EmployeeController : Controller
     {
         private readonly IEmployeeRepository _repository;
         private readonly IWebHostEnvironment env;
 
-        public DepartmentController(IEmployeeRepository departmentRepository, IWebHostEnvironment env)
+        public EmployeeController(IEmployeeRepository employeeRepository, IWebHostEnvironment env)
         {
-            _repository = departmentRepository;
+            _repository = employeeRepository;
             this.env = env;
         }
         public IActionResult Index()
         {
-            var departments = _repository.GetAll();
-            return View(departments);
+            var Employees = _repository.GetAll();
+            return View(Employees);
         }
 
         [HttpGet]
@@ -29,35 +29,35 @@ namespace PL.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Department department)
+        public IActionResult Create(Employee Employee)
         {
             if (ModelState.IsValid)
             {
-                var count = _repository.Add(department);
+                var count = _repository.Add(Employee);
                 if (count > 0)
                 {
                     return RedirectToAction(nameof(Index));
                 }
             }
 
-            return View(department);
+            return View(Employee);
         }
 
         [HttpGet]
         public IActionResult Details(int? id, string viewName = nameof(Details))
         {
-            if(!id.HasValue)
+            if (!id.HasValue)
             {
                 return BadRequest();
             }
 
-            var department = _repository.GetById(id.Value);
-            if (department == null)
+            var Employee = _repository.GetById(id.Value);
+            if (Employee == null)
             {
                 return NotFound();
             }
 
-            return View(viewName, department);
+            return View(viewName, Employee);
         }
 
         [HttpGet]
@@ -67,26 +67,26 @@ namespace PL.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit([FromRoute] int? id, Department department)
+        public IActionResult Edit([FromRoute] int? id, Employee Employee)
         {
-            if (id != department.Id)
+            if (id != Employee.Id)
             {
                 return BadRequest();
             }
 
             if (!ModelState.IsValid)
             {
-                return View(department);
+                return View(Employee);
             }
 
             try
             {
-                _repository.Update(department);
+                _repository.Update(Employee);
                 return RedirectToAction(nameof(Index));
             }
-            catch(System.Exception ex)
+            catch (System.Exception ex)
             {
-                if(env.IsDevelopment())
+                if (env.IsDevelopment())
                 {
                     ModelState.AddModelError(string.Empty, ex.Message);
                 }
@@ -95,7 +95,7 @@ namespace PL.Controllers
                     ModelState.AddModelError(string.Empty, "Error occured during update");
                 }
 
-                return View(department);
+                return View(Employee);
             }
         }
 
@@ -106,11 +106,11 @@ namespace PL.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(Department department)
+        public IActionResult Delete(Employee Employee)
         {
             try
             {
-                _repository.Delete(department);
+                _repository.Delete(Employee);
                 return RedirectToAction(nameof(Index));
             }
             catch (System.Exception ex)
@@ -124,7 +124,7 @@ namespace PL.Controllers
                     ModelState.AddModelError(string.Empty, "Error occured during delete");
                 }
 
-                return View(department);
+                return View(Employee);
             }
         }
     }

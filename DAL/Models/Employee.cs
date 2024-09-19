@@ -19,9 +19,8 @@ namespace DAL.Models
         PartTime = 2
     }
 
-    public class Employee
+    public class Employee : ModelBase
     {
-        public int Id { get; set; }
         [Required(ErrorMessage = "Name is required")]
         [MaxLength(50, ErrorMessage = "Max length for name is 50")]
         [MinLength(4, ErrorMessage = "Min length for name is 4")]
